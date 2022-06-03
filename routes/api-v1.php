@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,3 +17,4 @@ Route::put('categories', [CategoryController::class, 'update'])->name('api.v1.ca
 Route::delete('categories', [CategoryController::class, 'destroy'])->name('api.v1.categories.destroy');*/
 
 Route::apiResource('categories', CategoryController::class)->names('api.v1.categories');
+Route::apiResource('posts', PostController::class)->names('api.v1.posts');

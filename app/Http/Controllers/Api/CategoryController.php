@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
@@ -15,8 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::included()->filter()->get();
-        return $categories;
+        $categories = Category::included()->filter()->sort()->getOrPaginate();
+        return CategoryResource::collection($categories);
     }
 
     /**
@@ -33,7 +34,7 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::create($request->all());
-        return $category;
+        return CategoryResource::make($category);
     }
 
     /**
@@ -45,7 +46,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::included()->findOrFail($id);
-        return $category;
+        return CategoryResource::make($category);
     }
 
     /**
@@ -63,7 +64,7 @@ class CategoryController extends Controller
         ]);
 
         $category->update($request->all());
-        return $category;
+        return CategoryResource::make($category);
     }
 
     /**
@@ -75,6 +76,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return $category;
+        return CategoryResource::make($category);
     }
 }
