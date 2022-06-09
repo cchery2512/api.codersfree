@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\RegisterController;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 Route::post('register', [RegisterController::class, 'store'])->name('api.v1.register');
 
@@ -20,3 +22,19 @@ Route::apiResource('categories', CategoryController::class)->names('api.v1.categ
 Route::apiResource('posts', PostController::class)->names('api.v1.posts');
 
 Route::post('login', [LoginController::class, 'store'])->name('api.v1.login');
+
+Route::get('prueba', function () {
+    //Consulto la base de datos
+    $regs = DB::table('users')
+    ->orderBy('created_at', 'asc')
+    ->get();
+    //Agrupo los registros por hora
+    $regs = $regs->groupBy(function($reg){
+        return date('H',strtotime($reg->created_at));
+    });
+    //Sumo los registros por hora
+    foreach ($regs as $key => $value) {
+        $reg[$key] = $value->sum('id');
+    }
+    return $reg;
+});
