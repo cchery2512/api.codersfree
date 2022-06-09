@@ -30,11 +30,12 @@ Route::get('prueba', function () {
     ->get();
     //Agrupo los registros por hora
     $regs = $regs->groupBy(function($reg){
-        return date('H',strtotime($reg->created_at));
+        return Carbon::parse($reg->created_at)->setTimezone('America/Panama')->format('H');
     });
     //Sumo los registros por hora
     foreach ($regs as $key => $value) {
         $reg[$key] = $value->sum('id');
     }
     return $reg;
+
 });
