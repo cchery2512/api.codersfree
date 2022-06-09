@@ -34,8 +34,7 @@ Route::get('prueba', function () {
     });
     //Sumo los registros por hora
     foreach ($regs as $key => $value) {
-        $reg[$key] = $value->sum('id');
+        $regs[$key] = $value->sum('id');
     }
-    return $reg;
-
+    return $regs;
 });
