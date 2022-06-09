@@ -31,6 +31,7 @@ Route::get('prueba', function () {
     //Agrupo los registros por hora
     $regs = $regs->groupBy(function($reg){
         return Carbon::parse($reg->created_at)->setTimezone('America/Panama')->format('H');
+        //return Carbon::parse($reg->created_at)->setTimezone('America/Panama')->format('l');
     });
     //Sumo los registros por hora
     foreach ($regs as $key => $value) {
