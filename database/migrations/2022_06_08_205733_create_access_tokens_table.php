@@ -19,7 +19,7 @@ class CreateAccessTokensTable extends Migration
             $table->unsignedBigInteger('service_id');
             $table->text('access_token');
             $table->text('refresh_token');
-            $table->dateTime('exires_at');
+            $table->dateTime('expires_at');
             $table->timestamps();
         });
     }

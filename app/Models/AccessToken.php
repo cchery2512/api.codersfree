@@ -13,6 +13,6 @@ class AccessToken extends Model
         'service_id',
         'access_token',
         'refresh_token',
-        'exires_at',
+        'expires_at',
     ];
 }

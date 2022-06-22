@@ -4,14 +4,14 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 
 Route::post('register', [RegisterController::class, 'store'])->name('api.v1.register');
+Route::get('user/{id}', [RegisterController::class, 'show'])->name('api.v1.show');
 
 /*
 Route::get('categories', [CategoryController::class, 'index'])->name('api.v1.categories.index');
@@ -26,6 +26,7 @@ Route::apiResource('posts', PostController::class)->names('api.v1.posts');
 Route::post('login', [LoginController::class, 'store'])->name('api.v1.login');
 
 Route::get('prueba', function () {
+    return config('services.cordersfree');
     $precision = 30;
     $x = 3.552713678800501e-15;
     $number = number_format($x, 30,'.', '');

@@ -13,24 +13,18 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, ApiTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-    ];
+    protected $table = "users";
+
+    protected $primaryKey = 'id';
+
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'remember_token',
-    ];
+    protected $hidden = ['remember_token', 'password'];
 
     /**
      * The attributes that should be cast.
@@ -46,7 +40,7 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-    protected function accessToken(){
+    public function accessToken(){
         return $this->hasOne(AccessToken::class);
     }
 }
