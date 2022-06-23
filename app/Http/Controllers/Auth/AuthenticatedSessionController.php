@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Traits\Token;
 
 class AuthenticatedSessionController extends Controller
 {
+    use Token;
     /**
      * Display the login view.
      *
@@ -52,24 +52,8 @@ class AuthenticatedSessionController extends Controller
         $user = User::updateOrCreate(['email' => $request->email], $response['data']);
 
         if(!$user->accessToken){
-            $response = Http::withHeaders([
-                'Accept' => 'application/json',
-            ])->post('http://api.codersfree.test/oauth/token', [
-                'grant_type'    => 'password',
-                'client_id'     => config('services.cordersfree.client_id'),
-                'client_secret' => config('services.cordersfree.client_secret'),
-                'username'      => $request->email,
-                'password'      => $request->password,
-            ]);
+            $this->getAccessToken($user, $service);
 
-            $access_token = $response->json();
-            $user->accessToken()->create([
-                'service_id' => $service['data']['id'],
-                'access_token' => $access_token['access_token'],
-                'refresh_token' => $access_token['refresh_token'],
-                'expires_at' => now()->addSecond($access_token['expires_in']),
-            ]);
-            return $access_token;
         }
         Auth::login($user);
 

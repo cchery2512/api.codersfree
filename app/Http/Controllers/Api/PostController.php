@@ -32,7 +32,8 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
+
         $data = $request->validate([
             'name' => 'required|max:255',
             'slug' => 'required|max:255|unique:posts',

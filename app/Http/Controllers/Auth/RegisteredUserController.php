@@ -9,10 +9,13 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rules;
+use App\Traits\TraitToken;
 
 class RegisteredUserController extends Controller
 {
+    use TraitToken;
     /**
      * Display the registration view.
      *
@@ -39,11 +42,18 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+        ])->post('http://api.codersfree.test/v1/register', [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
         ]);
+
+        $service = $response->json();
+        $user = User::findOrFail($service['data']['id']);
+
+        $this->getAccessToken($user, $service);
 
         event(new Registered($user));
 

@@ -25,3 +25,7 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
+
+Route::get('prueba', function () {
+    return auth()->user()->accessToken->access_token;
+})->middleware('auth');
