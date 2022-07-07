@@ -5,10 +5,6 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\RegisterController;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use Carbon\CarbonPeriod;
-use Illuminate\Support\Facades\DB;
 
 Route::post('register', [RegisterController::class, 'store'])->name('api.v1.register');
 Route::get('user/{id}', [RegisterController::class, 'show'])->name('api.v1.show');
